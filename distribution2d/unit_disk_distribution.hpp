@@ -1,3 +1,5 @@
+#pragma once
+
 #include "unit_square_distribution.hpp"
 #include <utility>
 #include <tuple>
@@ -39,9 +41,6 @@ class unit_disk_distribution
       real_type1 r = std::sqrt(u);
       real_type2 theta = real_type2(2) * pi * v;
 
-      // if theta goes from [0, 2pi), then we never generate a point exactly at the origin
-      // would be nicer if we could avoid generating a point on the boundary of the disk
-
       return result_type{r * std::cos(theta), real_type2(r) * std::sin(theta)};
     }
 
@@ -65,7 +64,7 @@ class unit_disk_distribution
     {
       real_type radius_squared = std::get<0>(p) * std::get<0>(p) + std::get<1>(p) * std::get<1>(p);
 
-      return real_type(0) < radius_squared && radius_squared <= real_type(1);
+      return real_type(0) <= radius_squared && radius_squared < real_type(1);
     }
 
     constexpr static real_type probability_density(const result_type& p)
