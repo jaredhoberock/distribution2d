@@ -1,4 +1,4 @@
-#include "distribution2d/unit_square_distribution.hpp"
+#include "distribution2d/unit_disk_distribution.hpp"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -14,25 +14,26 @@ int main()
 {
   std::default_random_engine rng;
 
-  dist2d::unit_square_distribution<> unit_square;
+  dist2d::unit_disk_distribution<> dist;
 
-  // integrate over the unit square
-  size_t n = 10;
+  // integrate over the area
+  size_t n = 1;
   float sum = 0;
   for(int i = 0; i < n; ++i)
   {
-    auto p = unit_square(rng);
-    assert(unit_square.contains(p));
+    auto p = dist(rng);
+    assert(dist.contains(p));
 
-    float pdf = unit_square.probability_density(p);
+    float pdf = dist.probability_density(p);
     assert(pdf != 0);
 
-    sum += unit_square.area() / pdf;
+    sum += 1.f / pdf;
   }
 
   sum /= n;
 
-  assert(almost_equal(unit_square.area(), sum));
+  // XXX isn't the integral of pdf supposed to integrate to 1?
+  assert(almost_equal(dist.area(), sum));
 
   std::cout << "OK" << std::endl;
 

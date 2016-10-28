@@ -30,16 +30,19 @@ class unit_disk_distribution
     template<class Integer1, class Integer2>
     result_type operator()(Integer1 x, Integer2 y) const
     {
-      unit_square_distribution square;
+      unit_square_distribution<Point> square;
 
       real_type1 u;
       real_type2 v;
-      std::tie(u,v) = square(x, y);
+      std::tie(u,v) = square(x,y);
 
       real_type1 r = std::sqrt(u);
       real_type2 theta = real_type2(2) * pi * v;
 
-      return result_type{std::cos(theta), std::sin(theta)};
+      // if theta goes from [0, 2pi), then we never generate a point exactly at the origin
+      // would be nicer if we could avoid generating a point on the boundary of the disk
+
+      return result_type{r * std::cos(theta), real_type2(r) * std::sin(theta)};
     }
 
     template<class Integer,
@@ -62,7 +65,7 @@ class unit_disk_distribution
     {
       real_type radius_squared = std::get<0>(p) * std::get<0>(p) + std::get<1>(p) * std::get<1>(p);
 
-      return real_type(0) <= radius_squared && radius_squared < real_type(1);
+      return real_type(0) < radius_squared && radius_squared <= real_type(1);
     }
 
     static real_type probability_density(const result_type& p)
