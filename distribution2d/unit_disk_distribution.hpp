@@ -68,7 +68,7 @@ class unit_disk_distribution
       return real_type(0) < radius_squared && radius_squared <= real_type(1);
     }
 
-    static real_type probability_density(const result_type& p)
+    constexpr static real_type probability_density(const result_type& p)
     {
       return contains(p) ? (real_type(1) / area()) : real_type(0);
     }
