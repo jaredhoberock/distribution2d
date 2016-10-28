@@ -69,12 +69,13 @@ class unit_sphere_distribution
     {
       real_type radius_squared = std::get<0>(p) * std::get<0>(p) + std::get<1>(p) * std::get<1>(p) + std::get<2>(p) * std::get<2>(p);
 
-      return real_type(0) < radius_squared && radius_squared <= real_type(1);
+      return std::fabs(real_type(1) - radius_squared) < 0.000005f;
     }
 
+    // if !contains(p) the result is undefined
     constexpr static real_type probability_density(const result_type& p)
     {
-      return contains(p) ? (real_type(1) / area()) : real_type(0);
+      return real_type(1) / area();
     }
 
     constexpr static real_type area()

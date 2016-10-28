@@ -55,9 +55,10 @@ class unit_square_distribution
       return 0.f <= u && u < 1.f && 0.f <= v && v < 1.f;
     }
 
+    // if !contains(p) the result is undefined
     static real_type probability_density(const result_type& p)
     {
-      return contains(p) ? 1.f : 0.f;
+      return 1.f;
     }
 
     static real_type area()
