@@ -1,4 +1,4 @@
-#include "unit_square_distribution.hpp"
+#include "distribution2d/unit_square_distribution.hpp"
 #include <random>
 #include <cmath>
 #include <cassert>
