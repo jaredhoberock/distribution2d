@@ -1,3 +1,5 @@
+#pragma once
+
 #include "morton/morton.hpp"
 #include <utility>
 #include <tuple>
