@@ -16,9 +16,9 @@ int main()
 
   dist2d::unit_disk_distribution<> dist;
 
-  // integrate over the area
+  // compute a Monte Carlo estimate of the area of the distribution 
   size_t n = 1;
-  float sum = 0;
+  float estimate = 0;
   for(int i = 0; i < n; ++i)
   {
     auto p = dist(rng);
@@ -27,13 +27,12 @@ int main()
     float pdf = dist.probability_density(p);
     assert(pdf != 0);
 
-    sum += 1.f / pdf;
+    estimate += 1.f / pdf;
   }
 
-  sum /= n;
+  estimate /= n;
 
-  // XXX isn't the integral of pdf supposed to integrate to 1?
-  assert(almost_equal(dist.area(), sum));
+  assert(almost_equal(dist.area(), estimate));
 
   std::cout << "OK" << std::endl;
 
