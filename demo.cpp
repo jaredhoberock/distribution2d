@@ -1,4 +1,4 @@
-#include "distribution2d/unit_disk_distribution.hpp"
+#include "distribution2d/unit_sphere_distribution.hpp"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -14,7 +14,7 @@ int main()
 {
   std::default_random_engine rng;
 
-  dist2d::unit_disk_distribution<> dist;
+  dist2d::unit_sphere_distribution<> dist;
 
   // compute a Monte Carlo estimate of the area of the distribution 
   size_t n = 1;
