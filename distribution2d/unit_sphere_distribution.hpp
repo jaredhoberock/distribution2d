@@ -2,6 +2,9 @@
 
 #include "unit_square_distribution.hpp"
 #include <tuple>
+#include <utility>
+#include <algorithm>
+#include <cmath>
 #include <type_traits>
 
 namespace dist2d
