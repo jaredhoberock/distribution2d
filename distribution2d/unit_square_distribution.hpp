@@ -53,6 +53,8 @@ class unit_square_distribution
       return operator()(xy.first, xy.second);
     }
 
+    // XXX this only makes sense if g generates numbers which span the entire range of the result type
+    //     some random number generators don't do that
     template<class Generator,
              class = typename std::enable_if<
                detail::is_integral_generator<Generator>::value
