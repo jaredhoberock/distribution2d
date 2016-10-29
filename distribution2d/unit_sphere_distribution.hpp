@@ -32,17 +32,17 @@ class unit_sphere_distribution
 
   public:
     template<class Integer1, class Integer2>
-    result_type operator()(Integer1 urn0, Integer2 urn1) const
+    result_type operator()(Integer1 urn1, Integer2 urn2) const
     {
       unit_square_distribution<std::pair<real_type,real_type>> square;
 
-      real_type u;
-      real_type v;
-      std::tie(u,v) = square(urn0,urn1);
+      real_type u1;
+      real_type u2;
+      std::tie(u1,u2) = square(urn1,urn2);
 
-      real_type3 z = real_type3(1) - real_type3(2)*u;
+      real_type3 z = real_type3(1) - real_type3(2)*u1;
       real_type r = std::sqrt(std::max(real_type(0), real_type(1) - z*z));
-      real_type phi = two_pi * v;
+      real_type phi = two_pi * u2;
       real_type1 x = r * std::cos(phi);
       real_type2 y = r * std::sin(phi);
 
