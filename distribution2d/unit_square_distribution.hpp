@@ -1,26 +1,14 @@
 #pragma once
 
 #include "morton/morton.hpp"
+#include "unit_interval_distribution.hpp"
 #include <utility>
 #include <tuple>
 #include <limits>
-#include <iostream>
-#include <random>
 #include <type_traits>
 
 namespace dist2d
 {
-namespace detail
-{
-
-
-template<class T>
-using is_integral_generator = typename std::is_integral<
-  typename std::result_of<T&()>::type
->::type;
-
-
-} // end detail
 
 
 // a uniform distribution of points in [0,1)^2
@@ -31,16 +19,16 @@ class unit_square_distribution
     using result_type = Point;
     using real_type = typename std::tuple_element<0,result_type>::type;
 
+  private:
+    using real_type1 = typename std::tuple_element<0,result_type>::type;
+    using real_type2 = typename std::tuple_element<1,result_type>::type;
+
+  public:
     template<class Integer1, class Integer2>
     result_type operator()(Integer1 x, Integer2 y) const
     {
-      using real_type1 = typename std::tuple_element<0,result_type>::type;
-      using real_type2 = typename std::tuple_element<1,result_type>::type;
-
-      // XXX depending on the sizes of the types involved, these expressions can yield 1
-      //     this needs to be corrected because these numbers are not supposed to include 1
-      real_type1 u = real_type1(x) / ((real_type1(std::numeric_limits<Integer1>::max()) - std::numeric_limits<Integer1>::min()) + Integer1(1));
-      real_type2 v = real_type2(y) / ((real_type2(std::numeric_limits<Integer2>::max()) - std::numeric_limits<Integer2>::min()) + Integer2(1));
+      real_type1 u = unit_interval_distribution<real_type1>()(x);
+      real_type2 v = unit_interval_distribution<real_type2>()(y);
 
       return result_type{u, v};
     }
@@ -71,18 +59,18 @@ class unit_square_distribution
       const auto& u = std::get<0>(p);
       const auto& v = std::get<1>(p);
 
-      return 0.f <= u && u < 1.f && 0.f <= v && v < 1.f;
+      return real_type1(0) <= u && u < real_type1(1) && real_type2(0) <= v && v < real_type2(1);
     }
 
     // if !contains(p) the result is undefined
     static real_type probability_density(const result_type& p)
     {
-      return 1.f;
+      return real_type(1);
     }
 
     static real_type area()
     {
-      return 1.f;
+      return real_type(1);
     }
 };
 
