@@ -52,8 +52,22 @@ class unit_isoceles_right_triangle_distribution
       // x varies from (0, 1]
       real_type1 x = real_type1(1) - su1;
 
-      // y varies from [0, 1 - x)
-      real_type2 y = u2 * su1;
+      // many sources define y like this:
+      //
+      //    real_type2 y = u2 * su1;
+      //
+      // but we'd also like to assert that y is bounded from above by 1 - x in .contains()
+      //
+      // so, we can rewrite these equations:
+      //
+      //     y = u2 * su1
+      //     x = 1 - su1
+      //     x - 1 = -su1
+      //     1 - x = su1
+      //
+      //     y = u2 * (1 - x)
+      //
+      real_type2 y = u2 * (real_type1(1) - x);
 
       return result_type{x, y};
     }
@@ -98,7 +112,7 @@ class unit_isoceles_right_triangle_distribution
       const real_type1& x = std::get<0>(p);
       const real_type2& y = std::get<1>(p);
 
-      return (real_type1(0) < x && x <= real_type1(1)) && (real_type2(0) <= y && y <= real_type1(1) - x);
+      return (real_type1(0) < x && x <= real_type1(1)) && (real_type2(0) <= y && y <= real_type2(real_type1(1) - x));
     }
 
     // if !contains(p) the result is undefined
