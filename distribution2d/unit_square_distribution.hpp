@@ -37,6 +37,8 @@ class unit_square_distribution
       using real_type1 = typename std::tuple_element<0,result_type>::type;
       using real_type2 = typename std::tuple_element<1,result_type>::type;
 
+      // XXX depending on the sizes of the types involved, these expressions can yield 1
+      //     this needs to be corrected because these numbers are not supposed to include 1
       real_type1 u = real_type1(x) / ((real_type1(std::numeric_limits<Integer1>::max()) - std::numeric_limits<Integer1>::min()) + Integer1(1));
       real_type2 v = real_type2(y) / ((real_type2(std::numeric_limits<Integer2>::max()) - std::numeric_limits<Integer2>::min()) + Integer2(1));
 
