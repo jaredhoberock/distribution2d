@@ -1,4 +1,4 @@
-#include "distribution2d/unit_hemisphere_distribution.hpp"
+#include "distribution2d/concentric_unit_disk_distribution.hpp"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -14,12 +14,11 @@ int main()
 {
   std::default_random_engine rng;
 
-  dist2d::unit_hemisphere_distribution<> dist;
+  dist2d::concentric_unit_disk_distribution<> dist;
 
   // compute a Monte Carlo estimate of the area of the distribution 
-  size_t n = 10000;
   float estimate = 0;
-  for(int i = 0; i < n; ++i)
+  for(unsigned int i = 0; i < 10000; ++i)
   {
     auto p = dist(rng);
     assert(dist.contains(p));
@@ -27,10 +26,9 @@ int main()
     float pdf = dist.probability_density(p);
     assert(pdf != 0);
 
-    estimate += 1.f / pdf;
+    // update estimate robustly
+    estimate += ((1.f / pdf) - estimate)/(i+1);
   }
-
-  estimate /= n;
 
   assert(almost_equal(dist.area(), estimate));
 
