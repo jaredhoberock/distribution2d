@@ -31,15 +31,13 @@ class unit_sphere_distribution
     static constexpr real_type two_pi = real_type(2) * pi;
 
   public:
-    template<class Integer1, class Integer2>
-    result_type operator()(Integer1 urn1, Integer2 urn2) const
+    template<class Float1, class Float2,
+             class = typename std::enable_if<
+               std::is_floating_point<Float1>::value &&
+               std::is_floating_point<Float2>::value
+             >::type>
+    result_type operator()(Float1 u1, Float2 u2) const
     {
-      unit_square_distribution<std::pair<real_type,real_type>> square;
-
-      real_type u1;
-      real_type u2;
-      std::tie(u1,u2) = square(urn1,urn2);
-
       real_type3 z = real_type3(1) - real_type3(2)*u1;
       real_type r = std::sqrt(std::max(real_type(0), real_type(1) - z*z));
       real_type phi = two_pi * u2;
@@ -47,6 +45,22 @@ class unit_sphere_distribution
       real_type2 y = r * std::sin(phi);
 
       return result_type{x,y,z};
+    }
+
+    template<class Integer1, class Integer2>
+    typename std::enable_if<
+      std::is_integral<Integer1>::value && std::is_integral<Integer2>::value,
+      result_type
+    >::type
+      operator()(Integer1 urn1, Integer2 urn2) const
+    {
+      unit_square_distribution<std::pair<real_type,real_type>> square;
+
+      real_type u1;
+      real_type u2;
+      std::tie(u1,u2) = square(urn1,urn2);
+
+      return operator()(u1, u2);
     }
 
     template<class Integer,
