@@ -1,4 +1,4 @@
-#include "distribution2d/concentric_unit_disk_distribution.hpp"
+#include "distribution2d/cosine_weighted_unit_hemisphere_distribution.hpp"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -14,7 +14,7 @@ int main()
 {
   std::default_random_engine rng;
 
-  dist2d::concentric_unit_disk_distribution<> dist;
+  dist2d::cosine_weighted_unit_hemisphere_distribution<> dist;
 
   // compute a Monte Carlo estimate of the area of the distribution 
   float estimate = 0;
