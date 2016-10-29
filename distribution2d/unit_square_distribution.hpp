@@ -6,9 +6,21 @@
 #include <limits>
 #include <iostream>
 #include <random>
+#include <type_traits>
 
 namespace dist2d
 {
+namespace detail
+{
+
+
+template<class T>
+using is_integral_generator = typename std::is_integral<
+  typename std::result_of<T&()>::type
+>::type;
+
+
+} // end detail
 
 
 // a uniform distribution of points in [0,1)^2
@@ -41,7 +53,10 @@ class unit_square_distribution
       return operator()(xy.first, xy.second);
     }
 
-    template<class Generator>
+    template<class Generator,
+             class = typename std::enable_if<
+               detail::is_integral_generator<Generator>::value
+             >::type>
     result_type operator()(Generator& g) const
     {
       return operator()(g());

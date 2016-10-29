@@ -54,7 +54,10 @@ class unit_disk_distribution
       return operator()(xy.first, xy.second);
     }
 
-    template<class Generator>
+    template<class Generator,
+             class = typename std::enable_if<
+               detail::is_integral_generator<Generator>::value
+             >::type>
     result_type operator()(Generator& g) const
     {
       return operator()(g());
