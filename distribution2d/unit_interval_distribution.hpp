@@ -30,12 +30,15 @@ class unit_interval_distribution
     template<class Integer>
     real_type operator()(Integer i) const
     {
-      real_type result = real_type(i) / (real_type(std::numeric_limits<Integer>::max()) - std::numeric_limits<Integer>::min());
+      // see https://xor0110.wordpress.com/2010/09/24/how-to-generate-floating-point-random-numbers-efficiently/
+      union
+      {
+        Integer i;
+        float f;
+      } u;
 
-      // the above expression produces 1, so clamp the result to 1 - epsilon
-      result = std::min(real_type(1) - std::numeric_limits<real_type>::epsilon(), result);
-
-      return result;
+      u.i = (i & 0x007fffff) | 0x3f800000;
+      return u.f-1.f;
     }
 
     // XXX this only makes sense if g generates numbers which span the entire range of the result type
