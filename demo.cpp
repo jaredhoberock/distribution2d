@@ -12,7 +12,7 @@ bool almost_equal(float x, float y, float epsilon = 0.001f)
 
 int main()
 {
-  std::default_random_engine rng;
+  std::mt19937_64 rng;
 
   dist2d::unit_isoceles_right_triangle_distribution<> dist;
 
