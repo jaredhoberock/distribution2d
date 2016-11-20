@@ -1,3 +1,0 @@
-[submodule "distribution2d/morton"]
-	path = distribution2d/morton
-	url = git@github.com:jaredhoberock/morton
