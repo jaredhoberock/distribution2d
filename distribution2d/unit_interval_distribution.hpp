@@ -70,5 +70,8 @@ class unit_interval_distribution
 };
 
 
+constexpr unit_interval_distribution<> u01f{};
+
+
 } // end dist2d
 
